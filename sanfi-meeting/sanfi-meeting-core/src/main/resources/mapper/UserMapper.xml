@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoyao.mapper.UserMapper">
+
+
+    <sql id="allColumns">
+        id,name,email,telephone,province,city,zone,status
+    </sql>
+
+    <insert id="insertUser" parameterType="com.xiaoyao.entity.po.User">
+        insert into user (id, name,email,telephone,province,city,zone)
+        values (#{id},#{name},#{email},#{telephone},#{province},#{city},#{zone})
+    </insert>
+
+
+    <!--    List<User> selectUser();-->
+
+    <select id="selectUser" resultType="user">
+        select <include refid="allColumns"></include>
+        from user
+    </select>
+</mapper>

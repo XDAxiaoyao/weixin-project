@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/ceshi/ceshi.iml" filepath="$PROJECT_DIR$/ceshi/ceshi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sanfi-meeting/sanfi-meeting.iml" filepath="$PROJECT_DIR$/sanfi-meeting/sanfi-meeting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sanfi-meeting/sanfi-meeting-core/sanfi-meeting-core.iml" filepath="$PROJECT_DIR$/sanfi-meeting/sanfi-meeting-core/sanfi-meeting-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sanfi-meeting/sanfi-meeting-manager/sanfi-meeting-manager.iml" filepath="$PROJECT_DIR$/sanfi-meeting/sanfi-meeting-manager/sanfi-meeting-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sanfi-meeting/sanfi-meeting-weixin/sanfi-meeting-weixin.iml" filepath="$PROJECT_DIR$/sanfi-meeting/sanfi-meeting-weixin/sanfi-meeting-weixin.iml" />
+    </modules>
+  </component>
+</project>
