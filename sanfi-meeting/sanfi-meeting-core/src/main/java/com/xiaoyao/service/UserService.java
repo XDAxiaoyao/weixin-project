@@ -2,6 +2,7 @@ package com.xiaoyao.service;
 
 import com.xiaoyao.entity.po.User;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -27,4 +28,12 @@ public interface UserService {
      * todo 批量删除 多个id值 会放在一个数组string[] list<integer>
      */
     public int deleteBatch(String[] ids);
+
+
+    /**
+     *TODO 状态修改
+     */
+
+
+    public int changeStatusById(int status,int id);
 }

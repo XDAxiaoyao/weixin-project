@@ -36,4 +36,9 @@ public class UserServiceImpl implements UserService {
     public int deleteBatch(String[] ids) {
         return userMapper.deleteBatch(ids);
     }
+
+    @Override
+    public int changeStatusById(int status, int id) {
+        return userMapper.updateStatusById(status,id);
+    }
 }
