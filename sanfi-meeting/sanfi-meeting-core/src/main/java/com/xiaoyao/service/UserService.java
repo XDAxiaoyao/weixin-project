@@ -17,4 +17,14 @@ public interface UserService {
      * TODO 批量添加
      */
     public int addBatch(List<User> list);
+
+    /**
+     * 根据id删除信息
+     */
+    int deleteByPrimaryKey(Integer id);
+
+    /**
+     * todo 批量删除 多个id值 会放在一个数组string[] list<integer>
+     */
+    public int deleteBatch(String[] ids);
 }

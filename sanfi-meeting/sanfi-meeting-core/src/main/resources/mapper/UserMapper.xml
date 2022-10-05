@@ -178,4 +178,15 @@
 
 
   </insert>
+
+<!--  批量删除-->
+<!--  delete from user where id in (1,2,3,4,5);-->
+<!--  delete from user where 1!=1 id=1 or id = 2 or id = 3 or id = 4 -->
+  <delete id="deleteBatch" >
+    delete from user where id in
+<foreach collection="array" open="(" separator="," close=")">
+  (1,2,3,4,5)
+</foreach>
+
+  </delete>
 </mapper>

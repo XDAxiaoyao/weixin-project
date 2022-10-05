@@ -60,4 +60,26 @@ public class UserController {
         }
         return i;
     }
+
+
+    /**
+     * todo 根据id删除信息
+     */
+
+    @ResponseBody
+    @PostMapping("deleteUserById")
+    public int deleteUserById(@RequestParam("id") final  int id ){
+
+        return userService.deleteByPrimaryKey(id);
+    }
+
+    @ResponseBody
+    @PostMapping("deleteBatch")
+    public int deleteBatchByIds(@RequestParam("idsStr") String idsStr){
+        //使用,做ids的分隔拆分
+        String[] ids = idsStr.split(",");
+        int i = userService.deleteBatch(ids);
+        log.info("批量删除{}",i);
+        return i;
+    }
 }

@@ -26,4 +26,10 @@ public interface UserMapper {
      * 批量添加
      */
     public int insertBatch(List<User> list);
+
+    /**
+     * 批量删除 多个id值 会放在一个数组string[] list<integer>
+     */
+    public int deleteBatch(String[] ids);
+
 }

@@ -26,4 +26,14 @@ public class UserServiceImpl implements UserService {
     public int addBatch(List<User> list) {
         return userMapper.insertBatch(list);
     }
+
+    @Override
+    public int deleteByPrimaryKey(Integer id) {
+        return userMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public int deleteBatch(String[] ids) {
+        return userMapper.deleteBatch(ids);
+    }
 }
