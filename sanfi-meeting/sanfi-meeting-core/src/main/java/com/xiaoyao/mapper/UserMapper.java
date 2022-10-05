@@ -1,18 +1,29 @@
 package com.xiaoyao.mapper;
 
 import com.xiaoyao.entity.po.User;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-/**
- * @Program:
- * @ClassName:
- * @Date: 2022/9/29 21:14
- * @Auther: 潇遙
- * @Project_Name: weixin-project
- * @Description:
- */
 public interface UserMapper {
-    int insertUser(User user);
-    List<User> selectUser();
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(User record);
+
+    int insertSelective(User record);
+
+    User selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
+
+
+    @Select("select * from user")
+    List<User> selectList();
+
+    /**
+     * 批量添加
+     */
+    public int insertBatch(List<User> list);
 }

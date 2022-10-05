@@ -1,19 +1,20 @@
 package com.xiaoyao.service;
 
 import com.xiaoyao.entity.po.User;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-/**
- * @Program:
- * @ClassName:
- * @Date: 2022/9/29 21:25
- * @Auther: 潇遙
- * @Project_Name: weixin-project
- * @Description:
- */
 public interface UserService {
-    int addUser(User user);
 
-    List<User> queryUser();
+    /**
+     * TODO 查询用户列表全部数据
+     * @return
+     */
+    List<User> queryList();
+
+    /**
+     * TODO 批量添加
+     */
+    public int addBatch(List<User> list);
 }

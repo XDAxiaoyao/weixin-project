@@ -54,7 +54,25 @@
     <version>2.2.2</version>
   </dependency>
 
-  <!-- druid 数据源连接池 -->
+    <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      <version>2.7.3</version>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/net.sourceforge.nekohtml/nekohtml -->
+    <dependency>
+      <groupId>net.sourceforge.nekohtml</groupId>
+      <artifactId>nekohtml</artifactId>
+      <version>1.9.22</version>
+    </dependency>
+
+
+
+
+    <!-- druid 数据源连接池 -->
   <dependency>
     <groupId>com.alibaba</groupId>
     <artifactId>druid-spring-boot-starter</artifactId>
