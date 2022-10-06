@@ -82,4 +82,19 @@ public class UserController {
         log.info("批量删除{}",i);
         return i;
     }
+
+    /**
+     * TODO 用户状态修改
+     * @param status 状态0 无效 1 有效
+     * @param id 主键唯一标识
+     */
+
+    @PostMapping("updateStatusById")
+    @ResponseBody
+    public int updateStatusById(
+            @RequestParam("status") int status,
+            @RequestParam("id") int id
+    ){
+return userService.changeStatusById(status,id);
+    }
 }

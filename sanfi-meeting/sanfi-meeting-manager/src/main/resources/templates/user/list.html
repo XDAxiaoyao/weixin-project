@@ -95,11 +95,11 @@
 
 
                     <span th:if="${u.status == 0}">
-    <a style="text-decoration:none" onClick="article_stop(this,'10001')" href="javascript:;" title="上架">
+    <a style="text-decoration:none" onClick="article_stop(this,'10001')" th:onclick="|user_status_start(this,${u.id})|" href="javascript:;" title="上架">
                         <i class="Hui-iconfont">&#xe6dc;</i></a>
                     </span>
                     <span th:if="${u.status == 1}">
-    <a style="text-decoration:none" onClick="article_stop(this,'10001')" href="javascript:;" title="下架">
+    <a style="text-decoration:none" onClick="article_stop(this,'10001')" th:onClick="|user_status_stop(this,${u.id})|" href="javascript:;" title="下架">
                         <i class="Hui-iconfont">&#xe6de;</i></a>
                     </span>
 
@@ -239,23 +239,42 @@
                 layer.msg('未通过', {icon:5,time:1000});
             });
     }
-    /*资讯-下架*/
-    function article_stop(obj,id){
+    /*用户状态-下架 1改0*/
+    function user_status_stop(obj,id){
         layer.confirm('确认要下架吗？',function(index){
-            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_start(this,id)" href="javascript:;" title="发布"><i class="Hui-iconfont">&#xe603;</i></a>');
-            $(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已下架</span>');
-            $(obj).remove();
-            layer.msg('已下架!',{icon: 5,time:1000});
+            $.ajax({
+                type:"post",
+                url:"/user/updateStatusById",
+                data:{"status":0,"id":id},
+                success:function (msg) {
+                    $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="user_status_start(this,'+id+')" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6dc;</i></a>');
+                    $(obj).parents("tr").find(".td-status").html('<span class="label label-warning radius">未发布</span>');
+                    $(obj).remove();
+                    layer.msg('已下架!',{icon: 5,time:1000});
+                }
+            });
+
+
+
         });
     }
 
     /*资讯-发布*/
-    function article_start(obj,id){
+    function user_status_start(obj,id){
         layer.confirm('确认要发布吗？',function(index){
-            $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="article_stop(this,id)" href="javascript:;" title="下架"><i class="Hui-iconfont">&#xe6de;</i></a>');
-            $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
-            $(obj).remove();
-            layer.msg('已发布!',{icon: 6,time:1000});
+            $.ajax({
+                type:"post",
+                url:"/user/updateStatusById",
+                data:{"status":1,"id":id},
+                success:function (msg) {
+                    $(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="user_status_stop(this,'+id+')" href="javascript:;" title="上架"><i class="Hui-iconfont">&#xe6de;</i></a>');
+                    $(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已发布</span>');
+                    $(obj).remove();
+                    layer.msg('已发布!',{icon: 6,time:1000});
+                }
+            });
+
+
         });
     }
     /*资讯-申请上线*/
