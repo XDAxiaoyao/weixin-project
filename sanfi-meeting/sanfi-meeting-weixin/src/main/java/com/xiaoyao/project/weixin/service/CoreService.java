@@ -1,5 +1,6 @@
 package com.xiaoyao.project.weixin.service;
 
+import com.xiaoyao.project.weixin.api.hitokoto.HitokotoUtils;
 import com.xiaoyao.project.weixin.bean.resp.Article;
 import com.xiaoyao.project.weixin.bean.resp.NewsMessage;
 import com.xiaoyao.project.weixin.bean.resp.TextMessage;
@@ -7,6 +8,7 @@ import com.xiaoyao.project.weixin.bean.resp.image.ImageBean;
 import com.xiaoyao.project.weixin.bean.resp.image.ImageMessage;
 import com.xiaoyao.project.weixin.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +21,11 @@ import java.util.Map;
 @Slf4j
 public class CoreService {
 
-
+/**
+ * 一言服务器的第三方 api调用
+ */
+@Autowired
+private HitokotoUtils hitokotoUtils;
 	/**
 	 * 处理微信发来的请求
 	 *
@@ -87,7 +93,8 @@ public class CoreService {
 					return  respResult;
 				}else {
 
-					respContent = "您发送的是文本消息！";
+					// respContent = "您发送的是文本消息！";
+					respContent = hitokotoUtils.getHitokotoResult();
 				}
 			}
 			// 图片消息
