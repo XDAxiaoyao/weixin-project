@@ -69,7 +69,17 @@
       <version>1.9.22</version>
     </dependency>
 
+    <!--默认是lettuce客户端-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
 
+    <!-- redis依赖commons-pool 这个依赖一定要添加 -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-pool2</artifactId>
+    </dependency>
 
 
     <!-- druid 数据源连接池 -->

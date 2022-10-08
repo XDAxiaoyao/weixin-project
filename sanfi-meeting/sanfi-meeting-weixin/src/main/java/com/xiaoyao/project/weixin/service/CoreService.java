@@ -7,9 +7,7 @@ import com.xiaoyao.project.weixin.bean.resp.image.ImageBean;
 import com.xiaoyao.project.weixin.bean.resp.image.ImageMessage;
 import com.xiaoyao.project.weixin.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -21,8 +19,7 @@ import java.util.Map;
 @Slf4j
 public class CoreService {
 
-	@Autowired
-	private RestTemplate restTemplate;
+
 	/**
 	 * 处理微信发来的请求
 	 *
@@ -30,7 +27,6 @@ public class CoreService {
 	 * @return
 	 */
 	public String processRequest(HttpServletRequest request) {
-
 		String respMessage = null;
 		try {
 			// 默认返回的文本消息内容
@@ -69,45 +65,37 @@ public class CoreService {
 			NewsMessage newsMessage = new NewsMessage();
 			newsMessage.setToUserName(fromUserName);
 			newsMessage.setFromUserName(toUserName);
-			newsMessage.setCreateTime(new Date().getTime());
+			newsMessage.setCreateTime(System.currentTimeMillis());
 			newsMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
 			newsMessage.setFuncFlag(0);
 
 			// 文本消息
 			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
-				ImageMessage message = new ImageMessage();
-				message.setFromUserName(toUserName);
-				message.setToUserName(fromUserName);
-				message.setCreateTime(System.currentTimeMillis());
-				message.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_IMAGE);
-				if (content.equals("苍井空")){
 
-					ImageBean bean = new ImageBean();
-					bean.setMediaId("9scdTXf-mRTonvPyJMg3wifY5FmAHoHdDhiGK5iRt--S_zC7jH4fF7S_AwDsZkW8");
-					message.setImage(bean);
-					String result = MessageUtil.imageMessageToXml(message);
-					return result;
-				}else if (content.equals("李冰冰")){
-					ImageBean bean = new ImageBean();
-					bean.setMediaId("7w6kN-IxtgLL1ID1O2NIFZF_lcd_GZnBGnEQuOldhERKEBU3zE9aF6-EALAHJGn9");
-					message.setImage(bean);
-					String result = MessageUtil.imageMessageToXml(message);
-					return result;
+				if(content.equals("范冰冰")){
+					ImageMessage imageMessage=new ImageMessage();
+					imageMessage.setFromUserName(toUserName);
+					imageMessage.setToUserName(fromUserName);
+					imageMessage.setCreateTime(System.currentTimeMillis());
+					imageMessage.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_IMAGE);
+					ImageBean imageBean=new ImageBean();
+					imageBean.setMediaId("gyw28OpaaaKPYHbjyLVyhWsoY4jPoAsEbgNXsPBn8z8gryHX3l91Qi38B0856WCI");
+					imageMessage.setImage(imageBean);
+
+
+					String respResult=MessageUtil.imageMessageToXml(imageMessage);
+					return  respResult;
 				}else {
-					String url = "https://v1.hitokoto.cn/?encode=text";
-					String result = restTemplate.getForObject(url, String.class);
-					textMessage.setContent(result);
-					String s = MessageUtil.textMessageToXml(textMessage);
-				return s;
 
-
+					respContent = "您发送的是文本消息！";
 				}
 			}
 			// 图片消息
 			else if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_IMAGE)) {
-				String mediaId = requestMap.get("MediaId");
-				String picUrl = requestMap.get("PicUrl");
-				log.info(mediaId + "---------" + picUrl);
+
+					String MediaId=requestMap.get("MediaId");
+					String PicUrl=requestMap.get("PicUrl");
+					log.info(MediaId+"\t"+PicUrl);
 				respContent = "您发送的是图片消息！";
 			}
 			// 地理位置消息

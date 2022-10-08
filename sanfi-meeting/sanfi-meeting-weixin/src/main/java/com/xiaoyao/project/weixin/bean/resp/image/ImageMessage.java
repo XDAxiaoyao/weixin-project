@@ -5,16 +5,29 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @Program:
- * @ClassName:
- * @Date: 2022/9/28 19:27
- * @Auther: 潇遙
- * @Project_Name: weixin-project
- * @Description:
+ * @ClassName ImageMessage
+ * @Description TODO
+ * @Author guoweixin
+ * @Date 2022/9/28
+ * @Version 1.0
  */
-
 @Data
-public class ImageMessage implements Serializable {
+public class ImageMessage  implements Serializable {
+   /*
+   <xml>
+      <ToUserName><![CDATA[toUser]]></ToUserName>
+      <FromUserName><![CDATA[fromUser]]></FromUserName>
+      <CreateTime>12345678</CreateTime>
+      <MsgType><![CDATA[image]]></MsgType>
+      <Image>
+        <MediaId><![CDATA[media_id]]></MediaId>
+      </Image>
+    </xml>
+
+
+
+    */
+
 
     // 接收方帐号（收到的OpenID）
     private String ToUserName;
@@ -25,5 +38,5 @@ public class ImageMessage implements Serializable {
     // 消息类型（text/music/news）
     private String MsgType;
 
-    private ImageBean  Image;
+    private ImageBean Image;
 }

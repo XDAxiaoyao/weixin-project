@@ -4,12 +4,12 @@ import com.xiaoyao.project.weixin.bean.resp.Article;
 import com.xiaoyao.project.weixin.bean.resp.MusicMessage;
 import com.xiaoyao.project.weixin.bean.resp.NewsMessage;
 import com.xiaoyao.project.weixin.bean.resp.TextMessage;
+import com.xiaoyao.project.weixin.bean.resp.image.ImageMessage;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
-import com.xiaoyao.project.weixin.bean.resp.image.ImageMessage;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -138,9 +138,8 @@ public class MessageUtil {
 		return xstream.toXML(textMessage);
 	}
 
-
 	/**
-	 * 文本消息对象转换成xml
+	 * 图片消息对象转换成xml
 	 *
 	 * @param imageMessage 文本消息对象
 	 * @return xml

@@ -15,6 +15,7 @@ public interface UserMapper {
 
     User selectByPrimaryKey(Integer id);
 
+
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
@@ -41,5 +42,13 @@ public interface UserMapper {
     @Update("update user set status=#{status} where id = #{id}")
     public int updateStatusById(int status,int id);
 
+    @Select("select * from user where id =#{id}")
+    User selectListById(int id);
 
+
+    /**
+     * 查询所有的邮件列表数据
+     */
+    @Select("select email from user")
+    public List<String> selectEmails();
 }

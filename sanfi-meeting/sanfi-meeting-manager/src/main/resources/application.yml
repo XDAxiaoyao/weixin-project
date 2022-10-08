@@ -16,7 +16,13 @@ spring:
     cache: false
     mode: LEGACYHTML5
 
-
+  # redis config
+  redis:
+    password: 123456
+    host: 118.178.179.109
+    port: 6379
+    timeout: 2000
+    database: 1
   main:
     allow-bean-definition-overriding: true
     #表示后发现的bean会覆盖之前相同名称的bean。
@@ -26,3 +32,4 @@ mybatis:
   type-aliases-package: com.xiaoyao.entity.po
   configuration:
     map-underscore-to-camel-case: true
+call-setters-on-nulls: true #设置返回字段不为空，前端不报错

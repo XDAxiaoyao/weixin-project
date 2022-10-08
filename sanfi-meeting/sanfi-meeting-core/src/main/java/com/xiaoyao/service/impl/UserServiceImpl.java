@@ -41,4 +41,19 @@ public class UserServiceImpl implements UserService {
     public int changeStatusById(int status, int id) {
         return userMapper.updateStatusById(status,id);
     }
+
+    @Override
+    public User queryListById(int id) {
+        return userMapper.selectListById(id);
+    }
+
+    @Override
+    public int updateByPrimaryKey(User user) {
+        return userMapper.updateByPrimaryKey(user);
+    }
+
+    @Override
+    public List<String> selectEmails() {
+        return userMapper.selectEmails();
+    }
 }

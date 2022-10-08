@@ -36,4 +36,23 @@ public interface UserService {
 
 
     public int changeStatusById(int status,int id);
+
+    /**
+     * // TODO: 2022/10/6  查询单个user数据
+     */
+
+   User queryListById(int id);
+
+
+    /**
+     *     int updateByPrimaryKey(User record);
+     */
+
+    int updateByPrimaryKey(User user);
+
+
+    /**
+     * Todo 查询所有的邮件列表数据
+     */
+    public List<String> selectEmails();
 }
