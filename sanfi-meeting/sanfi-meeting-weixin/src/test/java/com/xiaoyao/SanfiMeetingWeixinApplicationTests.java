@@ -1,7 +1,6 @@
 package com.xiaoyao;
 
-import com.xiaoyao.project.weixin.api.hitokoto.HitokotoUtils;
-import com.xiaoyao.project.weixin.api.tuling.TuLingUtils;
+import com.xiaoyao.project.weixin.api.tuling.TuLingUtilsTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +11,7 @@ class SanfiMeetingWeixinApplicationTests {
      * 图灵机器人的测试
      */
     @Autowired
-    private TuLingUtils tuLingUtils;
+    private TuLingUtilsTest tuLingUtils;
 
     @Test
     void contextLoads() {

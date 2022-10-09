@@ -1,6 +1,7 @@
 package com.xiaoyao.project.weixin.service;
 
 import com.xiaoyao.project.weixin.api.hitokoto.HitokotoUtils;
+import com.xiaoyao.project.weixin.api.tuling.TuLingUtils;
 import com.xiaoyao.project.weixin.bean.resp.Article;
 import com.xiaoyao.project.weixin.bean.resp.NewsMessage;
 import com.xiaoyao.project.weixin.bean.resp.TextMessage;
@@ -26,6 +27,11 @@ public class CoreService {
  */
 @Autowired
 private HitokotoUtils hitokotoUtils;
+	/**
+	 * 图灵智能聊天机器人 api调用
+	 */
+	@Autowired
+private TuLingUtils tuLingUtils;
 	/**
 	 * 处理微信发来的请求
 	 *
@@ -94,7 +100,8 @@ private HitokotoUtils hitokotoUtils;
 				}else {
 
 					// respContent = "您发送的是文本消息！";
-					respContent = hitokotoUtils.getHitokotoResult();
+					// respContent = hitokotoUtils.getHitokotoResult();
+					respContent = tuLingUtils.sendText(content);
 				}
 			}
 			// 图片消息
