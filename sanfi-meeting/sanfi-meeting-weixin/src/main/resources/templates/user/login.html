@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title></title>
+    <!-- 引入 jQuery Mobile 样式 -->
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <!-- 引入 jQuery 库 -->
+    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- 引入 jQuery Mobile 库 -->
+    <script src="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+
+    <link href="https://cdn.bootcss.com/jquery-mobile/1.4.5/jquery.mobile.theme.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/jquery-validate/1.16.0/jquery.validate.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.form/4.2.1/jquery.form.js"></script>
+    <script src="/js/jquerymobile_popup.js"></script>
+    <script type="text/javascript">
+        function login(){
+            var email=$("#email").val();
+            if (""==email){
+                openPopup('邮箱不能把为空','提示',undefined,true,undefined,'error','cn');
+                return;
+            }
+
+            var wid=$("#wid").val();
+            var openid=$("#openid").val();
+            $.ajax({
+                type:"post",
+                url:"/user/login",
+                data:{"email":email,"wid":wid,"openid":openid},
+                success:function (msg) {
+                    if (msg=="1"){
+                        openPopup('用户登录成功','提示',undefined,true,undefined,'error','cn');
+                        WeixinJSBridge.call('closeWindow');
+                        return;
+                    } else if (msg=="2"){
+                        openPopup('你您的邮箱已被其它用户绑定，如有疑问，请联系管理员','提示',undefined,true,undefined,'error','cn');
+                        return;
+                    } else if (msg=="3"){
+                        openPopup('你输入邮箱不存在数据需要管理员申请','提示',undefined,true,undefined,'error','cn');
+                        return;
+                    }else{
+                        openPopup('网络异常请稍后再试','提示',undefined,true,undefined,'error','cn');
+                        return;
+                    }
+                }
+            });
+
+
+        }
+    </script>
+    <style type="text/css">
+        .ui-page{
+            background:#eee;
+        }
+    </style>
+</head>
+<body>
+<div data-role="page" id="pageMain" style="background-color: #4E90C7;">
+    <div style="text-align:center;"><img src="/images/dada_logo1.png" style="width: 100%;"></div>
+
+    <div data-role="content" class="content">
+        <form id="login_params" method="post" >
+            <input type="hidden" id="wid" name="wid" th:value="${wid}"/>
+            <input type="hidden" id="openid" name="openid" th:value="${openid}"/>
+            <div>
+                <input type="text" id="email" name="email" placeholder="公司邮箱" style="background: url('/images/ic_mail.png') no-repeat 5px;background-size: 30px;padding-left:40px;">
+            </div>
+            <div align="center" style="padding-top:30px;">
+                <input id="pubBtn" type="button" value="登录"  onclick="login();" style="padding:10px;background: #E57330;text-shadow: none;opacity:100;color:white;font-size:20px;text-indent:0px;font-family:微软雅黑;border: none;-webkit-appearance:none;-moz-appearance:none;width: 100%;border-radius:7px;" >
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+</body>
+</html>

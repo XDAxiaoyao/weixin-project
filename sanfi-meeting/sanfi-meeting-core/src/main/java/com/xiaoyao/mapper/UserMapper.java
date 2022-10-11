@@ -51,4 +51,28 @@ public interface UserMapper {
      */
     @Select("select email from user")
     public List<String> selectEmails();
+
+
+    /**
+     * 根据wid（wei_user[id] 判断user是否存在）
+     */
+    @Select("select * from user where wid = #{wid}")
+ public User selectUserByWid(int wid);
+
+
+    /**
+     * 根据email 查询user
+     */
+    @Select("select * from user where email = #{email}")
+    public User selectUserByEmail(String email);
+
+
+    /**
+     * 更新user wid 根据email
+     */
+    @Update("update user set wid = #{wid} where email =#{email}")
+    public int updateUserWidByEmail(int wid, String email);
+
+
+
 }

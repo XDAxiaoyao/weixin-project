@@ -56,4 +56,24 @@ public class UserServiceImpl implements UserService {
     public List<String> selectEmails() {
         return userMapper.selectEmails();
     }
+
+    @Override
+    public User selectUserByWid(int wid) {
+        return userMapper.selectUserByWid(wid);
+    }
+
+    @Override
+    public User selectUserByEmail(String email) {
+        return userMapper.selectUserByEmail(email);
+    }
+
+    @Override
+    public int updateUserWidByEmail(int wid, String email) {
+        return userMapper.updateUserWidByEmail(wid,email);
+    }
+
+    @Override
+    public int updateByPrimaryKeySelective(User user) {
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
 }

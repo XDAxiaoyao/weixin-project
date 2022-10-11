@@ -84,14 +84,14 @@ private TuLingUtils tuLingUtils;
 			// 文本消息
 			if (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) {
 
-				if(content.equals("范冰冰")){
+				if(content.equals("李冰冰")){
 					ImageMessage imageMessage=new ImageMessage();
 					imageMessage.setFromUserName(toUserName);
 					imageMessage.setToUserName(fromUserName);
 					imageMessage.setCreateTime(System.currentTimeMillis());
 					imageMessage.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_IMAGE);
 					ImageBean imageBean=new ImageBean();
-					imageBean.setMediaId("gyw28OpaaaKPYHbjyLVyhWsoY4jPoAsEbgNXsPBn8z8gryHX3l91Qi38B0856WCI");
+					imageBean.setMediaId("QRq7vdObjfpJzlPaPI_32NUcVB3t6uDNBPrtGQcBJxEkKf4wvnoiOebIdQGf6YMm");
 					imageMessage.setImage(imageBean);
 
 
@@ -137,6 +137,14 @@ private TuLingUtils tuLingUtils;
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_UNSUBSCRIBE)) {
 					// TODO 取消订阅后用户再收不到公众号发送的消息，因此不需要回复消息
 				}
+
+				//地理位置事件
+				else if (eventType.equals("LOCATION")){
+					String latitude = requestMap.get("Latitude");
+					String longitude = requestMap.get("Longitude");
+					String precision = requestMap.get("Precision");
+					log.info("当前地理位置：{}，{}，{}",latitude,longitude,precision);
+				}
 				// 自定义菜单点击事件
 				else if (eventType.equals(MessageUtil.EVENT_TYPE_CLICK)) {
 					// 事件KEY值，与创建自定义菜单时指定的KEY值对应
@@ -145,6 +153,19 @@ private TuLingUtils tuLingUtils;
 					if (eventKey.equals("11")) {
 						respContent = "菜单项被点击！";
 
+					}else if (eventKey.equals("1")){
+						respContent = hitokotoUtils.getHitokotoResult();
+					}else if (eventKey.equals("2")){
+						ImageMessage imageMessage=new ImageMessage();
+						imageMessage.setFromUserName(toUserName);
+						imageMessage.setToUserName(fromUserName);
+						imageMessage.setCreateTime(System.currentTimeMillis());
+						imageMessage.setMsgType(MessageUtil.REQ_MESSAGE_TYPE_IMAGE);
+						ImageBean imageBean=new ImageBean();
+						imageBean.setMediaId("QRq7vdObjfpJzlPaPI_32NUcVB3t6uDNBPrtGQcBJxEkKf4wvnoiOebIdQGf6YMm");
+						imageMessage.setImage(imageBean);
+						String respResult=MessageUtil.imageMessageToXml(imageMessage);
+						return  respResult;
 					}
 					else if (eventKey.equals("70")) {
 

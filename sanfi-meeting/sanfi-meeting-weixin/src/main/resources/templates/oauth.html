@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Oauth2.0页面</title>
+    <!-- 引入 jQuery Mobile 样式 -->
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <!-- 引入 jQuery 库 -->
+    <script src="http://apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- 引入 jQuery Mobile 库 -->
+    <script src="http://apps.bdimg.com/libs/jquerymobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+
+    <link href="https://cdn.bootcss.com/jquery-mobile/1.4.5/jquery.mobile.theme.css" rel="stylesheet">
+
+    <style type="text/css">
+        body {
+            font-family:"微软雅黑,Arial";
+            font-size:18px;
+            padding:0px;
+            margin:0 auto;
+        }
+
+        .font-blue{
+            color:#4E90C7!important;
+        }
+
+        .input-lightblue{
+            background-color: #E5F2FD!important;
+        }
+
+        .font-label{
+            color: black!important;
+            font-size: 19px!important;
+        }
+    </style>
+</head>
+<body>
+<div data-role="page" id="pageMain" style="">
+    <div data-role="header"  style="background-color: #4E90C7;" data-position="fixed">
+        <a href="#" data-icon="back" data-role="button">返回</a>
+        <h1>个人信息</h1>
+        <a href="#" data-role="button" data-icon="home">主页</a>
+    </div>
+
+
+    <div data-role="content" style="padding: 0;text-align:center;width: 100%;line-height:60px!important" >
+        <br/><br/>
+
+        <div >
+            <img th:src="${r.headimgurl}" style="border-radius:25px;"src="http://thirdwx.qlogo.cn/mmopen/mzWlopn7rjMPaUOSRkZw7K4IGGyPSLWYKNtkibibkTgBAkicddl5icj6GIOaxu2DiaecymXmECE6nxQ7vxSRdFnnlMoVo1fQa4cvN/132">
+        </div>
+
+        <div style="float: left;color: black;font-size:20px;width:auto;max-width:40%;padding-left: 15px;white-space: nowrap;overflow:hidden;text-overflow:ellipsis;text-algin:left;">
+            <span style="font-size:28px;color:#E57330" th:text="${r.nickname}">微信名称</span>
+        </div>
+
+        <div style="text-align: right;padding-right:10px;white-space: nowrap;">
+            <font style="font-size:28px;color:#E57330">
+                <span th:text="${r.city}">城市</span>/<span th:text="${r.province}">省份</span>
+                /<span th:text="${r.province}">国家</span>
+            </font>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+</body>
+</html>

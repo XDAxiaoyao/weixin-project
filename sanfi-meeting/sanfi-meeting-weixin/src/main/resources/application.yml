@@ -11,6 +11,18 @@ spring:
       password: 111111
       username: root
 
+    # thymeleaf config
+  thymeleaf:
+    cache: false
+    mode: LEGACYHTML5
+
+  # redis config
+  redis:
+    password: 123456
+    host: 118.178.179.109
+    port: 6379
+    timeout: 2000
+    database: 1
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
