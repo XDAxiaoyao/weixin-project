@@ -1,5 +1,6 @@
 package com.xiaoyao.project.oauth;
 
+import com.xiaoyao.common.crypto.AESCryptoUtils;
 import com.xiaoyao.entity.po.User;
 import com.xiaoyao.entity.po.WeiUser;
 import com.xiaoyao.project.weixin.main.MenuManager;
@@ -283,8 +284,13 @@ public class WeiXinMenuOauth {
         }else {
             //根据wid查询user对象是否存在，如果存在，进入个人信息详情页面。
             request.setAttribute("user",user);
-            if (user.getRid() == 1){
-                return "/meetingPub/add";
+            if (user.getRid() == 1){//发单组权限
+                String uid = user.getId() + "";
+                //加密
+                String uidCryto = AESCryptoUtils.encryptMethod(uid);
+                // return "/meetingPub/add";
+                request.setAttribute("uidCryto",uidCryto);
+                return "meetingPub/tempMeetingAdd";
             }else {
                 //如果不是发单组--》 进入无权限页面（其他操作）
                 return "unauth";

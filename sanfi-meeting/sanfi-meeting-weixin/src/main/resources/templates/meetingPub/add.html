@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
 <html>
 
 <head>
@@ -16,40 +16,41 @@
 
     <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
-
+    <script  src="/js/jquerymobile_popup.js" ></script>
 
 
     <script type="text/javascript">
 
         $(function () {
-        //加载课题类别
+            //加载课题类别
             loadMeetingType();
-        });
+        })
 
         //加载课题类别
-function loadMeetingType() {
-    //onload事件 加载 进入页面
-    $.ajax({
-        type:"get",
-        url:"/meetingType/loadMeetingType",
-        success:function (msg) {
-            if (msg.code == 2000){
-                var dataObj = msg.data;
-                //获取标签的值并跟下面的循环标签拼接
-                var appendHtml = "<option value='0'>请选择</option>>"
-                for (var i = 0; i <dataObj.length ; i++) {
-                    //获取到对象下标匹配的name和id
-                    var name = dataObj[i].name;
-                    var id = dataObj[i].id;
-                    //动态拼接标签
-                    appendHtml+="<option value="+id+">"+name+"</option>>"
-                }
+        function loadMeetingType() {
+            alert("ceshiyemian")
+            //onload事件 加载 进入页面
+            $.ajax({
+                type:"get",
+                url:"/meetingType/loadMeetingType",
+                success:function (msg) {
+                    if (msg.code == 2000){
+                        var dataObj = msg.data;
+                        //获取标签的值并跟下面的循环标签拼接
+                        var appendHtml = "<option value='0'>请选择</option>"
+                        for (var i = 0; i <dataObj.length ; i++) {
+                            //获取到对象下标匹配的name和id
+                            var name = dataObj[i].name;
+                            var id = dataObj[i].id;
+                            //动态拼接标签
+                            appendHtml+="<option value="+id+">"+name+"</option>"
+                        }
 
-                $("#tid").append(appendHtml);
-            }
+                        $("#tid").append(appendHtml);
+                    }
+                }
+            });
         }
-    });
-}
 
 
         function showPubDiv() {
@@ -103,6 +104,50 @@ function loadMeetingType() {
         //会议发布
         function subMeetingPub(){
 
+            var ptitle=$("#ptitle").val();
+            if (ptitle.length<1){
+                openPopup('会议主题不能把为空','提示',undefined,true,undefined,'error','cn');
+                return;
+            }
+
+            var ptime=$("#ptime").val();
+            if (ptime.length<1){
+                openPopup('召开时间不能把为空','提示',undefined,true,undefined,'error','cn');
+                return;
+            }
+
+            var tid=$("#tid").val();
+            if (tid==0){
+                openPopup('请选择有效课程类别','提示',undefined,true,undefined,'error','cn');
+                return;
+            }
+
+            //添加提交ajax
+            var dataObj=$("#pubForm").serialize();
+            $.ajax({
+                type:"post",
+                url:"/meetingPub/addMeetingPub",
+                data:dataObj,
+                success:function (msg) {
+                    if(msg.code=="2000") {
+                        $("#ptitle").val("");
+                        $("#ptime").val("");
+                        $("#tid").val(0);
+                        openPopup('会议添加成功', '提示', undefined, true, undefined, 'error', 'cn');
+                        return;
+                    }else if (msg.code == "4001"){
+                        //404页面
+                        window.location.href="/404.html";
+                    } else {
+                        openPopup('会议添加失败,重新进入页面再试','提示',undefined,true,undefined,'error','cn');
+                    }
+                }
+
+            })
+
+
+
+
         }
 
     </script>
@@ -124,19 +169,19 @@ function loadMeetingType() {
         <div style="width: 100%;background-color: white;padding:10px 0 10px 0;">
 
             <form id="pubForm" method="post">
-                <input type="hidden" name="openid" id="openid" value="${openid}"/>
+                <input type="hidden" name="uidCryto" id="uidCryto" th:value="${uidCryto}"/>
                 <div style="padding-right:15px;padding-left:15px">
-                    <label for="pname" class="font-label">会议名称:</label>
-                    <input name="pname" id="pname" placeholder="请输入会议名称" ></input>
+                    <label for="ptitle" class="font-label">会议名称:</label>
+                    <input name="ptitle" id="ptitle" placeholder="请输入会议名称" ></input>
                 </div>
                 <div  style="padding-right:15px;padding-left:15px">
-                    <label for="pubtime" class="font-label">会议日期</label>
-                    <input type="datetime-local" name="pubtime" id="pubtime" />
+                    <label for="ptime" class="font-label">会议日期</label>
+                    <input type="datetime-local" name="ptime" id="ptime" />
                 </div>
                 <div style="padding-right:15px;padding-left:15px">
-                    <label for="zone" class="font-label">讲者区域：</label>
-                    <select name="zone" id="zone">
-                        <option value="全国">全国</option>
+                    <label for="pzone" class="font-label">讲者区域：</label>
+                    <select name="pzone" id="pzone">
+                        <option value="全国" selected="selected">全国</option>
                         <option value="东区">东区</option>
                         <option value="南区">南区</option>
                         <option value="北区">北区</option>
@@ -147,17 +192,17 @@ function loadMeetingType() {
                 <div style="padding-right:15px;padding-left:15px">
                     <label for="tid" class="font-label">类别：</label>
                     <select name="tid" id="tid">
-<!--                        <option value="JAVA">JAVA</option>-->
-<!--                        <option value="UI">UI</option>-->
-<!--                        <option value="数据库">数据库</option>-->
+                        <!--                        <option value="JAVA">JAVA</option>-->
+                        <!--                        <option value="UI">UI</option>-->
+                        <!--                        <option value="数据库">数据库</option>-->
                     </select>
                 </div>
 
 
 
                 <div style="padding-right:15px;padding-left:15px">
-                    <label for="premark" class="font-label">备注(选填，100字以内)</label>
-                    <textarea name="premark" id="premark" placeholder="请输入会议备注" maxlength="100" class="font-blue input-lightblue" style="box-shadow: none;"></textarea>
+                    <label for="remark" class="font-label">备注(选填，100字以内)</label>
+                    <textarea name="remark" id="remark" placeholder="请输入会议备注" maxlength="100" class="font-blue input-lightblue" style="box-shadow: none;"></textarea>
                 </div>
                 <div style="padding-right:15px;padding-left:15px">
                     <input type="button" value="发布会议"  onclick="subMeetingPub()" id="btnId" />
@@ -173,6 +218,7 @@ function loadMeetingType() {
     <div id="two" class="ui-body-d ui-content" style="padding: 0;display: none;width: 100%;">
 
     </div>
+</div>
 </body>
 
 </html>

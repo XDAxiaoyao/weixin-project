@@ -18,7 +18,7 @@
     id, pcode, ptime, tid, ptitle, pzone, remark, uid, status, sortnum, create_date
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from meeting_pub
     where id = #{id,jdbcType=VARCHAR}
@@ -28,13 +28,13 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.xiaoyao.entity.po.MeetingPub" >
-    insert into meeting_pub (id, pcode, ptime, 
-      tid, ptitle, pzone, 
-      remark, uid, status, 
+    insert into meeting_pub (id, pcode, ptime,
+      tid, ptitle, pzone,
+      remark, uid, status,
       sortnum, create_date)
-    values (#{id,jdbcType=VARCHAR}, #{pcode,jdbcType=VARCHAR}, #{ptime,jdbcType=VARCHAR}, 
-      #{tid,jdbcType=INTEGER}, #{ptitle,jdbcType=VARCHAR}, #{pzone,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{uid,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT}, 
+    values (#{id,jdbcType=VARCHAR}, #{pcode,jdbcType=VARCHAR}, #{ptime,jdbcType=VARCHAR},
+      #{tid,jdbcType=INTEGER}, #{ptitle,jdbcType=VARCHAR}, #{pzone,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR}, #{uid,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT},
       #{sortnum,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.xiaoyao.entity.po.MeetingPub" >
@@ -160,4 +160,18 @@
       create_date = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+<!--
+我发布的会议列表
+
+-->
+  <select id="selectMeetingPubListByUid" resultMap="selectMeetingPubListByUidResultMap">
+    select pub.*,type.name from meeting_pub pub
+left join meeting_type type on pub.tid = type.id
+where uid = #{uid}
+  </select>
+  <resultMap id="selectMeetingPubListByUidResultMap" type="com.xiaoyao.entity.po.MeetingPub"
+
+
+
 </mapper>
