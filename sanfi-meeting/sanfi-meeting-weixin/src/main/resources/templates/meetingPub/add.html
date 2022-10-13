@@ -71,34 +71,49 @@
             $("#two").css("display", "block");
 
             $("#two").empty();
-            var mname="学习SpringBoot";
-            var remark="备注";
-            var dateCurr="时间";
-            var appendHtml = "<font style='padding: 10px 10px 10px 15px;display: block;color: #777777;'>您共发布了8场会议</font>";
+
+            var uidCrypto = $("#uidCryto").val();
+            $.ajax({
+                type:"get",
+                url:"/meetingPub/meetingPubListByUid",
+                data:{"uidCrypto":uidCrypto},
+                success:function (msg) {
+                    if (msg.code == "2000"){
+                        var dataObj = msg.data;
+
+                        var mname="";
+                        var remark="";
+                        var dateCurr="";
+                        var appendHtml = "<font style='padding: 10px 10px 10px 15px;display: block;color: #777777;'>您共发布了"+dataObj.length+"场会议</font>";
+
+                        for (var i = 0; i < dataObj.length; i++) {
+                           mname = dataObj[i].ptitle;
+                          remark =  dataObj[i].meetingType.name;
+                            dateCurr =  dataObj[i].pcode;
+                            appendHtml += "<div style='width: 100%;background-color: white;margin-top: -3px;padding:10px 10px 10px 15px;display: inline-block;'>" +
+                                "<div style='width: 70%;float: left;' onclick='showMeetingInfo(\"" + 1 + "\");'>" +
+                                "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;font-size:18px;'>" +
+                                mname + "</div>" +
+                                "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;color: #777777;font-size:16px;padding-top:1px'>" +
+                                remark + " / " + dateCurr + "</div></div>" +
+                                "<div style='width: 30%;float: right;'>" +
+                                "<button class='able-btn' >选择讲者</button></div></div>";
+                        }
 
 
 
-            appendHtml += "<div style='width: 100%;background-color: white;margin-top: -3px;padding:10px 10px 10px 15px;display: inline-block;'>" +
-                "<div style='width: 70%;float: left;' onclick='showMeetingInfo(\"" + 1 + "\");'>" +
-                "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;font-size:18px;'>" +
-                mname + "</div>" +
-                "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;color: #777777;font-size:16px;padding-top:1px'>" +
-                remark + " / " + dateCurr + "</div></div>" +
-                "<div style='width: 30%;float: right;'>" +
-                "<button class='able-btn' >选择讲者</button></div></div>";
+
+                        $("#two").append(appendHtml);
+                    }
+                }
+            });
 
 
 
-            appendHtml += "<div style='width: 100%;background-color: white;margin-top: -3px;padding:10px 10px 10px 15px;display: inline-block;'>" +
-                "<div style='width: 70%;float: left;' onclick='showMeetingInfo(\"" + 1 + "\");'>" +
-                "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;font-size:18px;'>" +
-                mname + "</div>" +
-                "<div style='white-space: nowrap;overflow: hidden;text-overflow:ellipsis;display: block;color: #777777;font-size:16px;padding-top:1px'>" +
-                remark + " / " + dateCurr + "</div></div>" +
-                "<div style='width: 30%;float: right;'>" +
-                "<button class='able-btn' >选择讲者</button></div></div>";
 
-            $("#two").append(appendHtml);
+
+
+
 
         }
         //会议发布

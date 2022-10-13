@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -38,6 +39,22 @@ meetingPub.setPcode(this.meetingPcodeGenerator(meetingPub.getPtime()));
         meetingPub.setStatus((short) 1);
         return meetingPubMapper.insertSelective(meetingPub);
     }
+
+    @Override
+    public List<MeetingPub> selectMeetingPubListByUid(int uid) {
+        return meetingPubMapper.selectMeetingPubListByUid(uid);
+    }
+
+    @Override
+    public List<MeetingPub> selectMeetingPubGrabListByUid(int uid, int tid) {
+        return meetingPubMapper.selectMeetingPubGrabListByUid(uid,tid);
+    }
+
+    /**
+     * TODO 我得会议列表（发布）
+     */
+
+
 
     /**
      * TODO 会议编号 生成规则

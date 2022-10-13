@@ -2,6 +2,8 @@ package com.xiaoyao.service;
 
 import com.xiaoyao.entity.po.MeetingPub;
 
+import java.util.List;
+
 /**
  * @Program:
  * @ClassName:
@@ -19,4 +21,19 @@ public interface MeetingPubService {
      * @return
      */
     int insertSelective(MeetingPub meetingPub);
+
+
+    /**
+     * 我得会议列表（发布）
+     * 创建sql语句查询列表数据
+     */
+    public List<MeetingPub> selectMeetingPubListByUid(int uid);
+
+
+    /**
+     * TODO 会议抢单--可抢单列表 根据抢单人id
+     * @param uid 抢单人id
+     * @param tid 课题类别的id
+     */
+    public List<MeetingPub> selectMeetingPubGrabListByUid(int uid,int tid);
 }

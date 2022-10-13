@@ -1,5 +1,7 @@
 package com.xiaoyao.project.weixin.service;
 
+import com.xiaoyao.entity.po.User;
+import com.xiaoyao.entity.po.WeiUser;
 import com.xiaoyao.project.weixin.api.hitokoto.HitokotoUtils;
 import com.xiaoyao.project.weixin.api.tuling.TuLingUtils;
 import com.xiaoyao.project.weixin.bean.resp.Article;
@@ -7,7 +9,10 @@ import com.xiaoyao.project.weixin.bean.resp.NewsMessage;
 import com.xiaoyao.project.weixin.bean.resp.TextMessage;
 import com.xiaoyao.project.weixin.bean.resp.image.ImageBean;
 import com.xiaoyao.project.weixin.bean.resp.image.ImageMessage;
+import com.xiaoyao.project.weixin.main.MenuManager;
 import com.xiaoyao.project.weixin.util.MessageUtil;
+import com.xiaoyao.service.UserService;
+import com.xiaoyao.service.WeiUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +37,16 @@ private HitokotoUtils hitokotoUtils;
 	 */
 	@Autowired
 private TuLingUtils tuLingUtils;
+
+	/**
+	 * 微信个人信息业务
+	 */
+	@Autowired
+	private WeiUserService weiUserService;
+
+
+	@Autowired
+	private UserService userService;
 	/**
 	 * 处理微信发来的请求
 	 *
@@ -58,7 +73,7 @@ private TuLingUtils tuLingUtils;
 			TextMessage textMessage = new TextMessage();
 			textMessage.setToUserName(fromUserName);
 			textMessage.setFromUserName(toUserName);
-			textMessage.setCreateTime(new Date().getTime());
+			textMessage.setCreateTime(System.currentTimeMillis());
 			textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
 			textMessage.setFuncFlag(0);
 			// 由于href属性值必须用双引号引起，这与字符串本身的双引号冲突，所以要转义
@@ -151,7 +166,50 @@ private TuLingUtils tuLingUtils;
 					String eventKey = requestMap.get("EventKey");
 
 					if (eventKey.equals("11")) {
-						respContent = "菜单项被点击！";
+						List<Article> articleList = new ArrayList<Article>();
+
+						// 单图文消息
+						Article article = new Article();
+						//判断当前微信用户是否进行登录（绑定）fromUserName = openid
+						WeiUser weiUser = weiUserService.selectWeiUserByOpenId(fromUserName);
+						if (weiUser == null){
+						respContent = "您无法操作，请点击菜单个人中心，进行登录";
+						}
+						//根据openid得到wei_user 主键id 判断user对象是否存在
+						User user = userService.selectUserByWid(weiUser.getId());
+						if (user == null){
+							article.setTitle("您还未登录，暂无法操作");
+							article.setDescription("会议抢单需要先进行个人登录（绑定）");
+							article.setPicUrl(
+									"https://t7.baidu.com/it/u=1732966997,2981886582&fm=193&f=GIF");
+							article.setUrl(MenuManager.REAL_URL + "/user/userLoginToPage?openid=" + fromUserName + "&wid=" + weiUser.getId());
+						}else {
+							if (user.getRid() == 2){
+								article.setTitle("您好，"+user.getName()+",您是抢单组，进入抢单功能的实现");
+								article.setDescription("您是抢单组，可点击页面进行抢单操作");
+								article.setPicUrl(
+										"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.php.cn%2Fupload%2Fwebpage%2F000%2F000%2F006%2F587dcd8dd1230997.jpg&refer=http%3A%2F%2Fimg.php.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1668171171&t=5644cf5ef46a9eebf1196acd7731996d");
+								article.setUrl(MenuManager.REAL_URL + "/meetingGrab/meetingGrabListToPage?uid=" + user.getId());
+							}else {
+								article.setTitle("您好，"+user.getName()+",您是发单组，暂无法操作会议抢单功能");
+								article.setDescription("您是发单组，有发单权限，发单相关教程和描述等信息");
+								article.setPicUrl(
+										"https://t7.baidu.com/it/u=2269795974,2286069410&fm=193&f=GIF");
+								article.setUrl(MenuManager.REAL_URL + "/user/unauth");
+							}
+						}
+
+
+
+
+						articleList.add(article);
+						// 设置图文消息个数
+						newsMessage.setArticleCount(articleList.size());
+						// 设置图文消息
+						newsMessage.setArticles(articleList);
+						// 将图文消息对象转换为XML字符串
+						respMessage = MessageUtil.newsMessageToXml(newsMessage);
+						return respMessage;
 
 					}else if (eventKey.equals("1")){
 						respContent = hitokotoUtils.getHitokotoResult();

@@ -29,13 +29,13 @@
   </delete>
   <insert id="insert" parameterType="com.xiaoyao.entity.po.MeetingPub" >
     insert into meeting_pub (id, pcode, ptime,
-      tid, ptitle, pzone,
-      remark, uid, status,
-      sortnum, create_date)
+                             tid, ptitle, pzone,
+                             remark, uid, status,
+                             sortnum, create_date)
     values (#{id,jdbcType=VARCHAR}, #{pcode,jdbcType=VARCHAR}, #{ptime,jdbcType=VARCHAR},
-      #{tid,jdbcType=INTEGER}, #{ptitle,jdbcType=VARCHAR}, #{pzone,jdbcType=VARCHAR},
-      #{remark,jdbcType=VARCHAR}, #{uid,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT},
-      #{sortnum,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP})
+            #{tid,jdbcType=INTEGER}, #{ptitle,jdbcType=VARCHAR}, #{pzone,jdbcType=VARCHAR},
+            #{remark,jdbcType=VARCHAR}, #{uid,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT},
+            #{sortnum,jdbcType=INTEGER}, #{createDate,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.xiaoyao.entity.po.MeetingPub" >
     insert into meeting_pub
@@ -149,29 +149,78 @@
   <update id="updateByPrimaryKey" parameterType="com.xiaoyao.entity.po.MeetingPub" >
     update meeting_pub
     set pcode = #{pcode,jdbcType=VARCHAR},
-      ptime = #{ptime,jdbcType=VARCHAR},
-      tid = #{tid,jdbcType=INTEGER},
-      ptitle = #{ptitle,jdbcType=VARCHAR},
-      pzone = #{pzone,jdbcType=VARCHAR},
-      remark = #{remark,jdbcType=VARCHAR},
-      uid = #{uid,jdbcType=INTEGER},
-      status = #{status,jdbcType=SMALLINT},
-      sortnum = #{sortnum,jdbcType=INTEGER},
-      create_date = #{createDate,jdbcType=TIMESTAMP}
+        ptime = #{ptime,jdbcType=VARCHAR},
+        tid = #{tid,jdbcType=INTEGER},
+        ptitle = #{ptitle,jdbcType=VARCHAR},
+        pzone = #{pzone,jdbcType=VARCHAR},
+        remark = #{remark,jdbcType=VARCHAR},
+        uid = #{uid,jdbcType=INTEGER},
+        status = #{status,jdbcType=SMALLINT},
+        sortnum = #{sortnum,jdbcType=INTEGER},
+        create_date = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
-<!--
-我发布的会议列表
+  <!--
+  我发布的会议列表
 
--->
+  -->
   <select id="selectMeetingPubListByUid" resultMap="selectMeetingPubListByUidResultMap">
     select pub.*,type.name from meeting_pub pub
-left join meeting_type type on pub.tid = type.id
-where uid = #{uid}
+                                  left join meeting_type type on pub.tid = type.id
+    where uid = #{uid}
+    order by pub.pcode desc
   </select>
-  <resultMap id="selectMeetingPubListByUidResultMap" type="com.xiaoyao.entity.po.MeetingPub"
+  <resultMap id="selectMeetingPubListByUidResultMap" type="com.xiaoyao.entity.po.MeetingPub" extends="BaseResultMap">
+    <!--pub完成赋值-->
+    <association property="meetingType">
+      <result column="name" property="name"></result>
+    </association>
 
+  </resultMap>
 
+  <!--
+  思路方法：
+  1、确定查询的主体。
+   会议主题
+   课题类别名称  会议编号 会议发单表、会议课题类别表  （我的发单列表）。
 
+  2、分析清楚业务逻辑。（草稿）
+    可抢单列表（业务）
+        只能抢全国 和抢单人同一个域的单子。
+        本人抢过的单子不能再抢。
+        别人匹配成功的单子不能再抢。
+        根据课题类别名称进行列表筛选。
+
+  3、实现SQL语句编写。
+
+  select pub.*,type.name from meeting_pub pub
+    LEFT JOIN  meeting_type type ON pub.tid=type.id
+    LEFT JOIN user u ON (pub.pzone='全国' or pub.pzone=u.zone )
+  where u.id=234
+  and pub.id not in (select pid from meeting_grab where uid=234  or grab_status=1)
+  and type.`name`='数据库'
+  ;
+        <if test="param2!= -1">
+        and pub.tid =#{param2}
+      </if>  -1表示显示全国的单子
+  -->
+
+  <select id="selectMeetingPubGrabListByUid" resultMap="selectMeetingPubGrabListByUidResultMap">
+    select pub.*,type.name from meeting_pub pub
+        left join  meeting_type type on pub.tid=type.id
+        left join user u on (pub.pzone='全国' or pub.pzone=u.zone )
+    where u.id=#{param1}
+      and pub.id not in (select pid from meeting_grab where uid=#{param1}  or grab_status=1)
+      <if test="param2!=-1">
+        and pub.tid =#{param2}
+      </if>
+     order by pcode desc;
+  </select>
+<resultMap id="selectMeetingPubGrabListByUidResultMap" type="com.xiaoyao.entity.po.MeetingPub" extends="BaseResultMap">
+  <!--pub完成赋值-->
+  <association property="meetingType">
+  <result column="name" property="name"></result>
+  </association>
+</resultMap>
 </mapper>

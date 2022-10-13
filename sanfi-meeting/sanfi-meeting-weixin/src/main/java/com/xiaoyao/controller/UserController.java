@@ -7,10 +7,7 @@ import com.xiaoyao.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,6 +34,35 @@ public class UserController {
      */
     @Autowired
     private MessageCustomUtil messageCustomUtil;
+
+
+    /**
+     * 会议抢单 进入登录页面
+     * /user/userLoginToPage
+     */
+    @GetMapping("userLoginToPage")
+public String userLoginToPage(HttpServletRequest request){
+        String wid = request.getParameter("wid");
+        String openid = request.getParameter("openid");
+        // 如果不存在，进入登录页面。
+        //将wid放入request作用域中 wid为weiuser的主键
+        request.setAttribute("wid",wid);
+        request.setAttribute("openid",openid);
+        return "user/login";
+}
+
+/**
+ * 无权限页面
+ */
+
+@GetMapping("unauth")
+public String unauth(){
+    return "unauth";
+}
+
+
+
+
     /**
      *  TODO 微信个人中心的登录功能
      *  1、进入登录页面

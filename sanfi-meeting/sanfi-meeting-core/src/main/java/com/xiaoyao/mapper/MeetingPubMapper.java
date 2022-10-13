@@ -33,4 +33,11 @@ public interface MeetingPubMapper {
      * 创建sql语句查询列表数据
      */
     public List<MeetingPub> selectMeetingPubListByUid(int uid);
+
+
+    /**
+     * 会议抢单--可抢单列表 根据抢单人id
+     */
+    public List<MeetingPub> selectMeetingPubGrabListByUid(int uid,int tid);
+
 }
